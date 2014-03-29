@@ -102,7 +102,7 @@ def asap(fn):
         return fn(*args, **kwargs)
     return wrapped
 
-this_is_urgent = asap
+this_is_urgent = quickly = asap
 
 
 if __name__ == '__main__':

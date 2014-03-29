@@ -64,7 +64,6 @@ def type_check(**decorator_kwargs):
     return decorator
 
 
-
 if __name__ == "__main__":
     from collections import Iterable
 
