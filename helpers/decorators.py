@@ -32,7 +32,7 @@ def patch_class(instance):
     >>>def foo(self):
     >>>    print self
     >>>
-    >>>a.foo()
+    >>>a.foo()  # a now has foo()
     ...
     """
     def decorator(fn):
@@ -40,3 +40,58 @@ def patch_class(instance):
         setattr(instance, fn.func_name, fn)
         return fn
     return decorator
+
+
+def deferred(fn):
+    """This function will exit before it completes.
+
+    >>>@deferred
+    >>>def poop():
+    >>>    # long computation
+    >>>
+    >>>poop()
+    """
+    import threading
+    
+    class TaskFinished(object):
+        thread = None
+        done_fns = []
+        fail_fns = []
+
+        def __init__(self, thread):
+            self.thread = thread
+            try:
+                wat = self.thread.join()
+            except BaseException as err:
+                for fn in self.fail_fns:
+                    fn(err)
+            else:
+                for fn in self.done_fns:
+                    fn(wat)
+
+        def done(self, fn):
+            self.done_fns.append(fn)
+            return self
+
+        def fail(self, fn):
+            self.fail_fns.append(fn)
+            return self
+
+    def replacement_fn(*args, **kwargs):
+        thread = threading.Thread(target=fn, args=args, kwargs=kwargs)
+        thread.start()
+        return TaskFinished(thread)
+
+    return replacement_fn
+
+
+if __name__ == '__main__':
+    @deferred
+    def hello():
+        print "hello"
+
+    def cb():
+        print "world"
+
+    res = hello()
+    res.done(cb)
