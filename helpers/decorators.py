@@ -1,3 +1,5 @@
+from functools import wraps
+
 __author__ = 'brian'
 
 
@@ -52,7 +54,7 @@ def deferred(fn):
     >>>poop()
     """
     import threading
-    
+
     class TaskFinished(object):
         thread = None
         done_fns = []
@@ -69,6 +71,9 @@ def deferred(fn):
                 for fn in self.done_fns:
                     fn(wat)
 
+        def __getattr__(self, item):
+            return getattr(self.thread, item)
+
         def done(self, fn):
             self.done_fns.append(fn)
             return self
@@ -83,6 +88,21 @@ def deferred(fn):
         return TaskFinished(thread)
 
     return replacement_fn
+
+
+def asap(fn):
+    """Runs the function right here and now.
+
+    Oh, guess what? It's already running as soon as possible.
+
+    Fuck you, managers.
+    """
+    @wraps(fn)
+    def wrapped(*args, **kwargs):
+        return fn(*args, **kwargs)
+    return wrapped
+
+this_is_urgent = asap
 
 
 if __name__ == '__main__':
