@@ -6,6 +6,12 @@ KitchenSink.egg-info/dependency_links.txt
 KitchenSink.egg-info/entry_points.txt
 KitchenSink.egg-info/top_level.txt
 KitchenSink.egg-info/zip-safe
+algorithms/__init__.py
+algorithms/color/__init__.py
+algorithms/geometry/__init__.py
+algorithms/grouping/__init__.py
+data/__init__.py
+data/string.py
 helpers/__init__.py
 helpers/arguments.py
 helpers/decorators.py

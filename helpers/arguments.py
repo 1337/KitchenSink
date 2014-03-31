@@ -64,6 +64,9 @@ def type_check(**decorator_kwargs):
     return decorator
 
 
+static = type_check  # alias
+
+
 if __name__ == "__main__":
     from collections import Iterable
 

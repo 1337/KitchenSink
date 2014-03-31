@@ -5,8 +5,9 @@ version = '0.1'
 
 setup(name='KitchenSink',
       version=version,
-      description="Like utils, but for every project.",
-      long_description="",
+      description="",
+      long_description="""\
+""",
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       keywords='',
       author='Brian Lai',
